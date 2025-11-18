@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --panel-color: #e9e4d5;
+}
+
+body {
+  @apply overflow-hidden h-screen w-screen bg-black text-black select-none;
+  background-image: url("/assets/wallpapers/wallpaper0.webp"); /* Fallback */
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* The CRT Grain Effect */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    rgba(0, 0, 0, 0.02) 0 1px,
+    transparent 1px 4px
+  );
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Custom Utility to hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
