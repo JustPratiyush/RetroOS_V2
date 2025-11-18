@@ -1,22 +1,66 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --panel-color: #e9e4d5;
+@theme {
+  /* Custom Colors */
+  --color-retro-panel: #e9e4d5;
+  --color-retro-black: #000000;
+  --color-retro-gray: #333333;
+  --color-retro-highlight: #4a90e2;
+  --color-retro-red: #ff5f57;
+  --color-retro-green: #32cd32;
+
+  /* Fonts (Linked to app/layout.tsx variables) */
+  --font-pixel: var(--font-pixelify), sans-serif;
+  --font-vt323: var(--font-vt323), monospace;
+
+  /* Background Image */
+  --background-image-wallpaper: url("/assets/wallpapers/wallpaper0.webp");
+
+  /* Animations */
+  --animate-boot-progress: progress 2s linear forwards;
+
+  @keyframes progress {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float-up {
+    0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-100px) scale(0.5) rotate(20deg); opacity: 0; }
+  }
 }
 
-body {
-  @apply overflow-hidden h-screen w-screen bg-black text-black select-none;
-  background-image: url("/assets/wallpapers/wallpaper0.webp"); /* Fallback */
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+/* Custom Utilities */
+@utility animate-float-up {
+  animation-name: float-up;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
 }
 
-/* The CRT Grain Effect */
-.grain-overlay {
+@utility no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+@utility grain-overlay {
   position: fixed;
   inset: 0;
   background-image: repeating-linear-gradient(
@@ -28,11 +72,12 @@ body {
   z-index: 9999;
 }
 
-/* Custom Utility to hide scrollbar but keep functionality */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Reset Base Styles */
+body {
+  @apply overflow-hidden h-screen w-screen bg-black text-black select-none;
+  background-image: var(--background-image-wallpaper);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }

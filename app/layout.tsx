@@ -2,22 +2,21 @@ import type { Metadata } from "next";
 import { Pixelify_Sans, VT323 } from "next/font/google";
 import "./globals.css";
 
-// Initialize Fonts
 const pixelify = Pixelify_Sans({
   subsets: ["latin"],
   weight: ["400", "700"],
-  variable: "--font-pixelify",
+  variable: "--font-pixelify", // This matches globals.css
 });
 
 const vt323 = VT323({
   subsets: ["latin"],
   weight: ["400"],
-  variable: "--font-vt323",
+  variable: "--font-vt323", // This matches globals.css
 });
 
 export const metadata: Metadata = {
-  title: "RetroOS — Next.js Edition",
-  description: "A nostalgic operating system portfolio.",
+  title: "RetroOS",
+  description: "Retro Operating System Portfolio",
 };
 
 export default function RootLayout({
@@ -27,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${pixelify.variable} ${vt323.variable} font-sans`}>
+      <body className={`${pixelify.variable} ${vt323.variable} antialiased`}>
         <div className="grain-overlay" />
         {children}
       </body>
