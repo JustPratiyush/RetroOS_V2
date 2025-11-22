@@ -15,6 +15,7 @@ import Music from "@/components/apps/Music";
 import Internet from "@/components/apps/Internet";
 import Finder from "@/components/apps/Finder";
 import Mail from "@/components/apps/Mail";
+import MatrixRain from "@/components/effects/MatrixRain";
 
 // --- DESKTOP COMPONENT (Accesses OS Context) ---
 const DesktopEnvironment = ({
@@ -70,65 +71,6 @@ const DesktopEnvironment = ({
             ReadMe.txt
           </span>
         </div>
-
-        {/* Icon: Terminal */}
-        <div
-          className="w-[90px] flex flex-col items-center gap-1 cursor-pointer group pointer-events-auto"
-          onDoubleClick={() => openApp("terminal")}
-        >
-          <div className="relative w-14 h-14 transition-transform duration-200 group-active:scale-90">
-            <Image
-              src="/assets/icons/terminal.webp"
-              alt="Terminal"
-              fill
-              className="object-contain drop-shadow-xl"
-              draggable={false}
-            />
-          </div>
-          <span className="font-vt323 text-white text-lg drop-shadow-md bg-black/20 px-2 rounded group-hover:bg-black/50 transition-colors">
-            Terminal
-          </span>
-        </div>
-
-        {/* Icon: Recycle Bin */}
-        <div
-          className="w-[90px] flex flex-col items-center gap-1 cursor-pointer group pointer-events-auto"
-          onDoubleClick={() => openApp("trash")}
-        >
-          <div className="relative w-14 h-14 transition-transform duration-200 group-active:scale-90">
-            <Image
-              src="/assets/icons/trash.webp"
-              alt="Trash"
-              fill
-              className="object-contain drop-shadow-xl"
-              draggable={false}
-            />
-          </div>
-          <span className="font-vt323 text-white text-lg drop-shadow-md bg-black/20 px-2 rounded group-hover:bg-black/50 transition-colors">
-            Recycle Bin
-          </span>
-        </div>
-
-        {/* Icon: GitHub (External Link) */}
-        <a
-          href="https://github.com/JustPratiyush"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-[90px] flex flex-col items-center gap-1 cursor-pointer group pointer-events-auto"
-        >
-          <div className="relative w-14 h-14 transition-transform duration-200 group-active:scale-90">
-            <Image
-              src="/assets/icons/github.webp"
-              alt="GitHub"
-              fill
-              className="object-contain drop-shadow-xl"
-              draggable={false}
-            />
-          </div>
-          <span className="font-vt323 text-white text-lg drop-shadow-md bg-black/20 px-2 rounded group-hover:bg-black/50 transition-colors">
-            GitHub
-          </span>
-        </a>
       </div>
 
       {/* 3. Window Layer (The OS 'Soul') */}
@@ -182,7 +124,7 @@ const DesktopEnvironment = ({
       <WindowFrame
         appId="internet"
         title="Internet Browser"
-        className="w-[600px] h-[700px]"
+        className="w-[600px] h-[500px]"
       >
         <Internet />
       </WindowFrame>
@@ -208,15 +150,52 @@ export default function Home() {
   const [isBooted, setIsBooted] = useState(false);
   // Login State
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // Matrix Mode
+  const [matrixMode, setMatrixMode] = useState(false);
 
   // Wallpaper State (Defaulting to wallpaper0 as per your file structure)
   const [wallpaper, setWallpaper] = useState(
     "/assets/wallpapers/wallpaper0.webp"
   );
 
+  // Konami Code Listener
+  useEffect(() => {
+    let cursor = 0;
+    const konami = [
+      "ArrowUp",
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowLeft",
+      "ArrowRight",
+      "b",
+      "a",
+    ];
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === konami[cursor]) {
+        cursor++;
+        if (cursor === konami.length) {
+          setMatrixMode((prev) => !prev);
+          cursor = 0;
+        }
+      } else {
+        cursor = 0;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <OSProvider>
       <main className="relative w-screen h-screen overflow-hidden bg-black selection:bg-retro-highlight selection:text-white">
+        {/* Matrix Rain Effect */}
+        <MatrixRain active={matrixMode} />
+
         {/* Boot Screen Overlay */}
         <BootScreen onBootComplete={() => setIsBooted(true)} />
 

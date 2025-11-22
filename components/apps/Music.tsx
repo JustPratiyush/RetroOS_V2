@@ -14,7 +14,7 @@ const FloatingNote = ({ x, y }: { x: number; y: number }) => {
         left: x,
         top: y,
         fontSize: `${Math.random() * 20 + 15}px`,
-        animationDuration: `${Math.random() * 1.5 + 1.5}s`,
+        animationDuration: `${Math.random() * 2 + 3}s`, // Slower: 3-5 seconds
       }}
     >
       {note}
@@ -39,22 +39,22 @@ export default function Music() {
     const interval = setInterval(() => {
       if (!containerRef.current) return;
 
-      // Get window position to spawn notes relative to the app window
+      // Get window position to spawn notes from the top of the app window
       const rect = containerRef.current.getBoundingClientRect();
 
       const newNote = {
         id: Date.now(),
         x: rect.left + Math.random() * rect.width,
-        y: rect.top + rect.height / 2,
+        y: rect.top, // Start from the top of the window
       };
 
       setNotes((prev) => [...prev, newNote]);
 
-      // Cleanup old notes
+      // Cleanup old notes (after animation completes - 5 seconds max)
       setTimeout(() => {
         setNotes((prev) => prev.filter((n) => n.id !== newNote.id));
-      }, 2000);
-    }, 600); // Spawn rate
+      }, 5000);
+    }, 800); // Slower spawn rate
 
     return () => clearInterval(interval);
   }, [isPlaying]);

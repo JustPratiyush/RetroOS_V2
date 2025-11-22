@@ -58,16 +58,17 @@ export default function Trash() {
   // Render Stages
   if (stage === "folder") {
     return (
-      <div
-        className="flex flex-col items-center justify-center h-full p-4"
-        onDoubleClick={handleFolderClick}
-      >
-        <div className="w-20 h-20 relative cursor-pointer hover:opacity-80">
+      <div className="flex flex-col items-center justify-center h-full p-4">
+        <div
+          className="w-20 h-20 relative cursor-pointer hover:opacity-80 transition-opacity active:scale-95"
+          onClick={handleFolderClick}
+          onDoubleClick={handleFolderClick}
+        >
           <Image
             src="/assets/icons/folderIcon.webp"
             alt="Secret"
             fill
-            className="object-contain"
+            className="object-contain pointer-events-none"
           />
         </div>
         <span className="mt-2 font-vt323 text-xl">

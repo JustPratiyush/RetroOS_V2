@@ -4,12 +4,34 @@ import { useState } from "react";
 
 export default function Mail() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-    // Mock sending for now
-    setTimeout(() => setStatus("sent"), 1500);
+    
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, subject, message, name: email.split('@')[0] }),
+      });
+
+      if (res.ok) {
+        setStatus("sent");
+        // Clear form
+        setEmail("");
+        setSubject("");
+        setMessage("");
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      alert("Failed to send. Please try again.");
+      setStatus("idle");
+    }
   };
 
   if (status === "sent") {
@@ -47,6 +69,8 @@ export default function Mail() {
           <input
             type="email"
             placeholder="your@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
             className="flex-1 bg-transparent outline-none"
           />
@@ -56,6 +80,8 @@ export default function Mail() {
           <input
             type="text"
             placeholder="Regarding your project..."
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
             required
             className="flex-1 bg-transparent outline-none"
           />
@@ -64,6 +90,8 @@ export default function Mail() {
         <textarea
           className="flex-1 p-3 outline-none resize-none bg-[#fff] text-xl font-vt323"
           placeholder="Write your message here..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           required
         />
 
